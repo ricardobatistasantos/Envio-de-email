@@ -7,7 +7,6 @@ type ConnectionType = {
 };
 
 export class BullMqManager {
-
   private readonly connection: ConnectionType;
 
   private readonly flowProducer: FlowProducer;
@@ -48,7 +47,7 @@ export class BullMqManager {
       concurrency,
     });
   }
-  
+
   public async addFlow(
     name: string,
     queueName: string,

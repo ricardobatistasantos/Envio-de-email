@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { createTransport, Transporter } from 'nodemailer';
+import { createTransport, Transporter } from "nodemailer";
+import { IEmailProvider } from "../core/email.provider";
 
-@Injectable()
-export class EmailService {
+export class NodemailerProvider implements IEmailProvider {
   private transporter: Transporter;
 
   constructor() {
@@ -17,18 +16,17 @@ export class EmailService {
     });
   }
 
-  async execute(data: { to: string, subject: string, text: string }) {
+  async sendMail(to: string, subject: string, text: string): Promise<void> {
     try {
       await this.transporter.sendMail({
         from: process.env.GMAIL_USER,
-        to: data.to,
-        subject: data.subject,
-        text: data.text,
+        to,
+        subject,
+        text,
       });
-      console.log(`✅ E-mail enviado para: ${data.to}`);
-
+      console.info(`E-mail enviado para: ${to}`);
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }
